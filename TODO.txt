@@ -1,0 +1,10 @@
+Create SOP container
+    - exploitS
+
+v2 utilizing md5
+
+Vandalize website
+ - pictures
+ - session hijacking
+ - link manipulation
+ - stored xss
