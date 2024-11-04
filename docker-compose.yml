@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: mysql:latest
+    restart: always
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: bank_database
+      MYSQL_PASSWORD: password
+    ports:
+      - "6690:3306" # Expose MySQL on port 6689
+    volumes:
+      - ./db_dump/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+
+  app:
+    image: gcr.io/267832347767/web-app:latest
+    container_name: expressjs_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # Expose your Express app on port 3000
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=bank_database
+      - DB_PORT=3306
+
+volumes:
+  db_data:

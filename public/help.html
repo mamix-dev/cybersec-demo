@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Page</title>
+    <link href="/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-center mb-4">Help Page</h2>
+
+                <!-- Search Bar -->
+                <div class="input-group mb-4">
+                    <input type="text" class="form-control" id="search-bar" placeholder="Search for help topics..."
+                        aria-label="Search">
+                    <button class="btn btn-primary" type="button" id="search-button">Search</button>
+                </div>
+
+                <!-- Results Section -->
+                <div id="results" class="mt-4">
+                    <h5>Results:</h5>
+                    <div class="list-group" id="results-list">
+                        <!-- Results will appear here -->
+                    </div>
+                    <p class="text-muted" id="no-results" style="display: none;">No results found. Please enter a search
+                        term.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('search-button').addEventListener('click', () => {
+            const query = document.getElementById('search-bar').value;
+
+            fetch(`/search?query=${encodeURIComponent(query)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const resultsList = document.getElementById('results-list');
+                    resultsList.innerHTML = ''; // Clear previous results
+
+                    // Process and display results
+                    if (data.length === 0) {
+                        resultsList.innerHTML = '<p class="text-muted">No results found.</p>';
+                    } else {
+                        data.forEach(item => {
+                            const listItem = document.createElement('div');
+                            listItem.classList.add('list-group-item');
+                            listItem.innerHTML = `<h6>${item.title}</h6><p>${item.content}</p>`;
+                            resultsList.appendChild(listItem);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    const resultsList = document.getElementById('results-list');
+                    resultsList.innerHTML = '<p class="text-danger">Error fetching results.</p>';
+                });
+        });
+
+    </script>
+</body>
+
+</html>

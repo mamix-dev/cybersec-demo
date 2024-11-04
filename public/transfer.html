@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Transfer</title>
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-sm">
+                    <div class="card-header text-center">
+                        <h4>Money Transfer</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="transferForm">
+                            <div class="mb-3">
+                                <label for="accountNumber" class="form-label">Account Number</label>
+                                <input type="text" class="form-control" id="accountNumber" name="accountNumber" placeholder="Enter account number" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">Amount</label>
+                                <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter amount" step="0.01" required>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Transfer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('transferForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+        
+            // Gather form data
+            const accountNumber = document.getElementById('accountNumber').value;
+            const amount = document.getElementById('amount').value;
+        
+            // Create JSON object
+            const data = {
+                accountNumber: accountNumber,
+                amount: amount
+            };
+        
+            // Send data as JSON via fetch
+            fetch('/transfer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Set the content type to JSON
+                },
+                body: JSON.stringify(data) // Convert the data to JSON string
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Parse JSON response
+            })
+            .then(data => {
+                console.log('Success:', data); // Handle success (you can update the UI or show a message)
+            })
+            .catch(error => {
+                console.error('Error:', error); // Handle errors
+            });
+        });
+        </script>
+        
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
