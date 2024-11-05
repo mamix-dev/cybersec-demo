@@ -11,7 +11,7 @@ services:
     ports:
       - "6690:3306" # Expose MySQL on port 6690
     volumes:
-      - ./db_dump/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./db_dump/dump.sql:/docker-entrypoint-initdb.d/newdump.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
       interval: 10s

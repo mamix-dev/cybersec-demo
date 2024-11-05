@@ -163,7 +163,34 @@ app.post('/signup', (req, res) => {
   });
 });
 
+// POST endpoint to add new post
+app.post('/post', (req, res) => {
+  const username = req.session.user.username;
+  const content = req.body.content;
 
+  const query = `INSERT INTO forum_posts (username, content) VALUES ('${username}', '${content}')`;
+
+  db.query(query, (err, result) => {
+      if (err) {
+          res.status(500).send('Error saving post');
+          return;
+      }
+      res.send({ message: 'Post added successfully' });
+  });
+});
+
+// GET endpoint to retrieve posts
+app.get('/posts', (req, res) => {
+  const query = 'SELECT username, content FROM forum_posts ORDER BY id DESC';
+
+  db.query(query, (err, results) => {
+      if (err) {
+          res.status(500).send('Error retrieving posts');
+          return;
+      }
+      res.json(results);
+  });
+});
 
 // Dashboard of bank accounts
 app.get('/dashboard', (req, res) => {
@@ -186,6 +213,10 @@ app.get('/transfer', (req, res) => {
 
 app.get('/help', (req, res) => {
   res.sendFile(path.join(__dirname, './public/help.html'));
+});
+
+app.get('/forum', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/forum.html'));
 });
 
 // Search endpoint

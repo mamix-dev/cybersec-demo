@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <!-- Forum Header -->
+    <div class="text-center mb-4">
+        <h2>Forum</h2>
+        <p>Share your thoughts with yoru fellow customers</p>
+    </div>
+
+    <!-- Forum Post Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form id="postForm">
+                <div class="mb-3">
+                    <label for="postContent" class="form-label">Enter your message:</label>
+                    <textarea class="form-control" id="postContent" rows="4" placeholder="Write something..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Post</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Forum Posts Section -->
+    <div id="forumPosts">
+        <h4 class="mb-3">Recent Posts</h4>
+        <div id="postsContainer" class="list-group">
+            <!-- Dynamic posts will appear here -->
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // JavaScript to handle form submission and display posts
+    document.getElementById('postForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevents page reload
+        const postContent = document.getElementById('postContent').value;
+        
+        if (postContent.trim() !== "") {
+            // Create new post element
+            const post = document.createElement('div');
+            post.className = 'list-group-item list-group-item-action mb-2';
+            post.textContent = postContent;
+            
+            // Append new post to posts container
+            document.getElementById('postsContainer').prepend(post);
+
+            // Clear textarea
+            document.getElementById('postContent').value = "";
+        }
+    });
+</script>
+
+</body>
+</html>
